@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { setCurrentUser } from '../redux/contactsSlice';
+import { useNavigate } from 'react-router-dom';
 
 const RegisterPage = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleNameChange = (event) => {
     setName(event.target.value);
@@ -30,9 +31,13 @@ const RegisterPage = () => {
         email,
         password,
       });
-      const currentUser = response.data;
+      const { token, currentUser } = response.data;
+      localStorage.setItem('token', token);
       dispatch(setCurrentUser(currentUser));
-      console.log('Пользователь зарегистрирован:', currentUser);
+      setName('');
+      setEmail('');
+      setPassword('');
+      navigate('/contacts');
     } catch (error) {
       console.error('Ошибка при регистрации:', error);
     }
@@ -40,10 +45,10 @@ const RegisterPage = () => {
 
   return (
     <div>
-      <h2>Регистрация</h2>
+      <h2>Register</h2>
       <form onSubmit={handleSubmit}>
         <label>
-          Имя:
+          Name:
           <input type="text" value={name} onChange={handleNameChange} />
         </label>
         <br />
@@ -53,11 +58,15 @@ const RegisterPage = () => {
         </label>
         <br />
         <label>
-          Пароль:
-          <input type="password" value={password} onChange={handlePasswordChange} />
+          Password:
+          <input
+            type="password"
+            value={password}
+            onChange={handlePasswordChange}
+          />
         </label>
         <br />
-        <button type="submit">Зарегистрироваться</button>
+        <button type="submit">Register</button>
       </form>
     </div>
   );

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Link, Navigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 import {
@@ -108,7 +108,16 @@ const App = () => {
 
         <Routes>
           <Route path="/register" element={<RegisterPage />} />
-          <Route path="/login" element={<LoginPage />} />
+          <Route
+            path="/login"
+            element={
+              currentUser ? (
+                <Navigate to="/contacts" replace /> // Если пользователь уже вошел в систему, перенаправляем на страницу контактов
+              ) : (
+                <LoginPage />
+              )
+            }
+          />
           <Route
             path="/contacts"
             element={
@@ -122,7 +131,7 @@ const App = () => {
                   />
                 </>
               ) : (
-                <LoginPage />
+                <Navigate to="/login" replace /> // Если пользователь не вошел в систему, перенаправляем на страницу входа
               )
             }
           />

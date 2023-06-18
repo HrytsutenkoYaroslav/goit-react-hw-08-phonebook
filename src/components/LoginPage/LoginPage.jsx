@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { setCurrentUser } from '../redux/contactsSlice';
+import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -24,16 +25,20 @@ const LoginPage = () => {
         email,
         password,
       });
-      const currentUser = response.data;
+      const { token, currentUser } = response.data;
+      localStorage.setItem('token', token);
       dispatch(setCurrentUser(currentUser));
+      setEmail('');
+      setPassword('');
+      navigate('/contacts'); // Перенаправляем на страницу контактов
     } catch (error) {
-      console.error(error);
+      console.error('Ошибка при входе в систему:', error);
     }
   };
 
   return (
     <div>
-      <h2>Вход</h2>
+      <h2>Login</h2>
       <form onSubmit={handleSubmit}>
         <label>
           Email:
@@ -41,11 +46,15 @@ const LoginPage = () => {
         </label>
         <br />
         <label>
-          Пароль:
-          <input type="password" value={password} onChange={handlePasswordChange} />
+          Password:
+          <input
+            type="password"
+            value={password}
+            onChange={handlePasswordChange}
+          />
         </label>
         <br />
-        <button type="submit">Войти</button>
+        <button type="submit">Login</button>
       </form>
     </div>
   );
