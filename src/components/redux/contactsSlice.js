@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, createAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 const API_BASE_URL = 'https://6484b416ee799e321626f4dd.mockapi.io/contacts/contacts';
@@ -30,6 +30,17 @@ export const deleteContact = createAsyncThunk('contacts/deleteContact', async (c
   }
 });
 
+export const updateContact = createAsyncThunk('contacts/updateContact', async ({ contactId, updatedData }) => {
+  try {
+    const response = await axios.patch(`${API_BASE_URL}/${contactId}`, updatedData);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+});
+
+export const setFilter = createAction('contacts/setFilter');
+
 const initialState = {
   items: [],
   isLoading: false,
@@ -40,11 +51,7 @@ const initialState = {
 const contactsSlice = createSlice({
   name: 'contacts',
   initialState,
-  reducers: {
-    setFilter: (state, action) => {
-      state.filter = action.payload;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchContacts.pending, (state) => {
@@ -82,10 +89,27 @@ const contactsSlice = createSlice({
       .addCase(deleteContact.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
+      })
+      .addCase(updateContact.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(updateContact.fulfilled, (state, action) => {
+        state.isLoading = false;
+        const updatedContact = action.payload;
+        const index = state.items.findIndex((contact) => contact.id === updatedContact.id);
+        if (index !== -1) {
+          state.items[index] = updatedContact;
+        }
+      })
+      .addCase(updateContact.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
       });
   },
 });
 
-export const { setFilter } = contactsSlice.actions;
+export const selectCurrentUser = (state) => state.contacts.currentUser;
+export const setCurrentUser = createAction('contacts/setCurrentUser');
 
 export default contactsSlice.reducer;
