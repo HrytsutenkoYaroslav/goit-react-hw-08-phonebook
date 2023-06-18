@@ -40,7 +40,6 @@ const App = () => {
 
   useEffect(() => {
     checkAuthorizationStatus();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleAddContact = async (name, number) => {
@@ -120,20 +119,18 @@ const App = () => {
           />
           <Route
             path="/contacts"
-            element={
-              currentUser ? (
-                <>
-                  <ContactForm onSubmit={handleAddContact} />
-                  <Filter onFilterChange={(filter) => dispatch(setFilter(filter))} />
-                  <ContactList
-                    onDeleteContact={handleDeleteContact}
-                    onUpdateContact={handleUpdateContact}
-                  />
-                </>
-              ) : (
-                <Navigate to="/login" replace /> 
-              )
-            }
+            element={currentUser ? (
+              <>
+                <ContactForm onSubmit={handleAddContact} />
+                <Filter onFilterChange={(filter) => dispatch(setFilter(filter))} />
+                <ContactList
+                  onDeleteContact={handleDeleteContact}
+                  onUpdateContact={handleUpdateContact}
+                />
+              </>
+            ) : (
+              <Navigate to="/login" replace />
+            )}
           />
         </Routes>
       </BrowserRouter>
