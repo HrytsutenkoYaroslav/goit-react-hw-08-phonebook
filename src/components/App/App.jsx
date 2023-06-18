@@ -112,7 +112,7 @@ const App = () => {
             path="/login"
             element={
               currentUser ? (
-                <Navigate to="/contacts" replace /> // Если пользователь уже вошел в систему, перенаправляем на страницу контактов
+                <Navigate to="/contacts" replace />
               ) : (
                 <LoginPage />
               )
@@ -131,7 +131,7 @@ const App = () => {
                   />
                 </>
               ) : (
-                <Navigate to="/login" replace /> // Если пользователь не вошел в систему, перенаправляем на страницу входа
+                <Navigate to="/login" replace /> 
               )
             }
           />
