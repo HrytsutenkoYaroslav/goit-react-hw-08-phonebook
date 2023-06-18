@@ -1,11 +1,14 @@
-// RegisterPage.jsx
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { setCurrentUser } from '../redux/contactsSlice';
 
 const RegisterPage = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const dispatch = useDispatch();
 
   const handleNameChange = (event) => {
     setName(event.target.value);
@@ -27,21 +30,20 @@ const RegisterPage = () => {
         email,
         password,
       });
-      console.log(response.data);
-      setName('');
-      setEmail('');
-      setPassword('');
+      const currentUser = response.data;
+      dispatch(setCurrentUser(currentUser));
+      console.log('Пользователь зарегистрирован:', currentUser);
     } catch (error) {
-      console.error(error);
+      console.error('Ошибка при регистрации:', error);
     }
   };
 
   return (
     <div>
-      <h2>Register</h2>
+      <h2>Регистрация</h2>
       <form onSubmit={handleSubmit}>
         <label>
-          Name:
+          Имя:
           <input type="text" value={name} onChange={handleNameChange} />
         </label>
         <br />
@@ -51,11 +53,11 @@ const RegisterPage = () => {
         </label>
         <br />
         <label>
-          Password:
+          Пароль:
           <input type="password" value={password} onChange={handlePasswordChange} />
         </label>
         <br />
-        <button type="submit">Register</button>
+        <button type="submit">Зарегистрироваться</button>
       </form>
     </div>
   );

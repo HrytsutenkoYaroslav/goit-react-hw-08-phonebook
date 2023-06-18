@@ -33,7 +33,7 @@ const LoginPage = () => {
 
   return (
     <div>
-      <h2>Login</h2>
+      <h2>Вход</h2>
       <form onSubmit={handleSubmit}>
         <label>
           Email:
@@ -41,11 +41,11 @@ const LoginPage = () => {
         </label>
         <br />
         <label>
-          Password:
+          Пароль:
           <input type="password" value={password} onChange={handlePasswordChange} />
         </label>
         <br />
-        <button type="submit">Log In</button>
+        <button type="submit">Войти</button>
       </form>
     </div>
   );

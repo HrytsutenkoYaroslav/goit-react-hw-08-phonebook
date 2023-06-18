@@ -1,5 +1,4 @@
-
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
@@ -39,7 +38,7 @@ const App = () => {
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     checkAuthorizationStatus();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -79,28 +78,28 @@ const App = () => {
 
   return (
     <div className={css.app}>
-      <h1>Phonebook</h1>
+      <h1>Телефонная книга</h1>
       <BrowserRouter>
         <nav>
           <ul>
             {currentUser ? (
               <>
                 <li>
-                  <Link to="/contacts">Contacts</Link>
+                  <Link to="/contacts">Контакты</Link>
                 </li>
                 <li>
                   <Link to="/" onClick={handleLogout}>
-                    Logout
+                    Выйти
                   </Link>
                 </li>
               </>
             ) : (
               <>
                 <li>
-                  <Link to="/register">Register</Link>
+                  <Link to="/register">Регистрация</Link>
                 </li>
                 <li>
-                  <Link to="/login">Login</Link>
+                  <Link to="/login">Войти</Link>
                 </li>
               </>
             )}
@@ -108,14 +107,8 @@ const App = () => {
         </nav>
 
         <Routes>
-          <Route
-            path="/register"
-            element={<RegisterPage />}
-          />
-          <Route
-            path="/login"
-            element={<LoginPage />}
-          />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/login" element={<LoginPage />} />
           <Route
             path="/contacts"
             element={
