@@ -1,28 +1,13 @@
-import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { useAuth } from 'redux/hooks';
+import { Nav } from './Navigation.styled';
 
-const Navigation = () => {
+export const Navigation = () => {
+  const { isLoggedIn } = useAuth();
   return (
-    <nav>
-      <ul>
-        <li>
-          <NavLink to="/register" activeClassName="active">
-            Реєстрація
-          </NavLink>
-        </li>
-        <li>
-          <NavLink to="/login" activeClassName="active">
-            Вхід
-          </NavLink>
-        </li>
-        <li>
-          <NavLink to="/contacts" activeClassName="active">
-            Контакти
-          </NavLink>
-        </li>
-      </ul>
-    </nav>
+    <Nav>
+      <NavLink to="/">Home</NavLink>
+      {isLoggedIn && <NavLink to="/contacts">Contacts</NavLink>}
+    </Nav>
   );
 };
-
-export default Navigation;
