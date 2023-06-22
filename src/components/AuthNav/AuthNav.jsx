@@ -4,10 +4,10 @@ export const AuthNav = () => {
     return (
         <AuthNavBlock>
             <NavLink to='/register'>
-                Register
+                Registration
             </NavLink>
             <NavLink to='/login'>
-                Log in
+                Sign in
             </NavLink>
         </AuthNavBlock>
     )
